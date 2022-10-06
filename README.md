@@ -6,7 +6,7 @@
 | ------------- | ------------- |
 | Justin Tan | JUSTUN9 |
 | David Mohammadi | davidmo13|
-| Momin Anwar | mominanawar|
+| Momin Anwar | mominanwar|
 | Mujhtaba Afzal | Gunflower123 |
 | Sam Ryder | SamRyder |
 | Flavia Dumitrica | flaviamihaela |
