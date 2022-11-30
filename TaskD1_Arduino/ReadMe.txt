@@ -8,5 +8,3 @@ t - Time data
 g - GPS data
 w %filename% %data% - Write to SD Card
 r %filename% - Read from SD Card, if file exists
-
-ignore D1.ino
