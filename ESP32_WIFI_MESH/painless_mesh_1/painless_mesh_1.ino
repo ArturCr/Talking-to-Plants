@@ -1,4 +1,5 @@
 // Necessary Libraries
+// Gateway
 
 #include "painlessMesh.h"
 #include <ArduinoJson.h>
@@ -13,10 +14,11 @@
 // variables
 
 SimpleList<uint32_t> nodes;
-char buff[512];
+// 
+char buff[5000];
+
+char storage[15000];
 StaticJsonDocument<1024> doc;
-//StaticJsonDocument<384> doc;
-//DynamicJsonDocument doc(1024);
 Scheduler userScheduler; // to control your personal task
 painlessMesh  mesh;
 int numNodes = 0; // stores number of nodes
@@ -50,7 +52,9 @@ void receivedCallback( uint32_t from, String &msg ) {
   // check if received, if received ignore, if not store to memory
   if (nodeReceivedState[layer_state][hashMap.getValueOf(from)][buff[1]]== 0 ){ // if message not received => save to buffer
     // save to buffer
-    Serial.println("save to buffer");
+    Serial.println("save to buffer",from);
+    // [TODO]
+
   } 
 
   // check whether this layer is done
@@ -62,8 +66,24 @@ void receivedCallback( uint32_t from, String &msg ) {
     }
   }
   // if complete flag still true we go to next layer
-  if (complete == true){
-    layer_state += 1;  // move on to next layer
+  if (complete == true){ 
+    if(layered_numNodes[layer_state+1]>0){ // checks if its furthest layer
+      layer_state += 1;  // move on to next layer
+      // call for messages within next layer
+      for (int i = 0 ; i<layered_numNodes[layer_state] ; i++){
+        // call each node individually
+        sendSingle(nodeTreeList[layer_state][i],"S"); // "S" denotes starting message
+      }
+      Serial.printf(" Layer Done = ", layer_state);
+      Serial.println("");
+    }
+    else { // is furthest layer End of receiving 
+      // [TODO]
+      Serial.println("Transmission Complete");
+    }
+  }
+  else{ // transmission not complete
+    //[TODO]
   }
 }
 
@@ -88,51 +108,11 @@ void changedConnectionCallback() {
     //Serial.println(nodeList[nodeCount]);
     Serial.printf(" %u", *node);
     node++;
-    
     nodeCount +=1;
     }
   
   Serial.println();
-}
 
-void nodeTimeAdjustedCallback(int32_t offset) {
-  Serial.printf("Adjusted time %u. Offset = %d\n", mesh.getNodeTime(), offset);
-}
-
-// done portion needed by painless mesh
-
-void sendMessage(){
-
-  
-  int length = 6;
-  char msg[length]={0,}; // initialise x sized char => with 0's
-  for (int i = 0 ;i <length-1; i++  ){
-    msg[i] = 'a';
-    //Serial.println(i);
-  } 
-  msg[length -1] = '\0';
-  //msg = "This is a trial";
-  Serial.println(sizeof(msg));
-  Serial.println(msg[5]);
-  //serializeJson(doc, msg);
-  mesh.sendBroadcast( msg );
-  Serial.print("Mesh Broadcast - "); Serial.println(msg);
-  Serial.printf("--> startHere: New Connection, %s\n", mesh.subConnectionJson(true).c_str());
-  
-  
-  // parsing Json
-  
-
-  DeserializationError error = deserializeJson(doc, mesh.subConnectionJson(true).c_str());
-
-  if (error) {
-    Serial.print("deserializeJson() failed: ");
-    Serial.println(error.c_str());
-    return;
-  }
-
-  long long nodeId = doc["nodeId"]; // 2127231457
-  bool root = doc["root"]; // true
 
   // setting up dataset of node tree
   int layer_counts[10]= {0};
@@ -253,6 +233,50 @@ void sendMessage(){
   Serial.print("root =  ");
   Serial.println(root);
   Serial.print("stuff");
+}
+
+void nodeTimeAdjustedCallback(int32_t offset) {
+  Serial.printf("Adjusted time %u. Offset = %d\n", mesh.getNodeTime(), offset);
+}
+
+// done portion needed by painless mesh
+
+void sendMessage(){
+
+  
+  int length = 1;
+  char msg[length]={0,}; // initialise x sized char => with 0's
+  for (int i = 0 ;i <length-1; i++  ){
+    msg[i] = 'S';
+    //Serial.println(i);
+  } 
+  msg[length -1] = '\0';
+  //msg = "This is a trial";
+  Serial.println(sizeof(msg));
+  //serializeJson(doc, msg);
+  //mesh.sendBroadcast( msg );
+  
+  // send to all layer xth nodes
+  for (int i = 0 ; i<layered_numNodes[layer_state] ; i++){
+    // call each node individually
+    sendSingle(nodeTreeList[layer_state][i],"S"); // "S" denotes starting message
+  }
+
+  Serial.print("Mesh Broadcast - "); Serial.println(msg);
+  Serial.printf("--> startHere: New Connection, %s\n", mesh.subConnectionJson(true).c_str());
+  // parsing Json
+  //DeserializationError error = deserializeJson(doc, mesh.subConnectionJson(true).c_str());
+
+  if (error) {
+    Serial.print("deserializeJson() failed: ");
+    Serial.println(error.c_str());
+    return;
+  }
+
+  long long nodeId = doc["nodeId"]; // 2127231457
+  bool root = doc["root"]; // true
+
+  
  taskSendMessage.setInterval((TASK_SECOND * 10));
 }
 
