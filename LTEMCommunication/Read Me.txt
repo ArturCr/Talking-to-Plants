@@ -1,0 +1,3 @@
+LTEM Communication V1:
+
+Connects to Soracom Harvest, confirms connection and then stops
