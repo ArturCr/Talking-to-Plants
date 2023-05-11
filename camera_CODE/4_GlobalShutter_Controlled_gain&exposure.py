@@ -1,7 +1,7 @@
 #User defined parametters
 
 #Amplitude= 595-400 #1000 # 4095-DC_offset while DC_offset>=4095//2
-DC_offset = 3500-600
+DC_offset = 3500-300 #600
 Amplitude = 4095-DC_offset
 Period= 5 #works within 1 to 10
 buffersize=1024
