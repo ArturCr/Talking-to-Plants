@@ -16,7 +16,7 @@ clock = time.clock()                # Create a clock object to track the FPS.
 buf = bytearray(100)
 for i in range(len(buf)):
     #buf[i] = 3250 + int((4095-3400-300) * math.sin(2 * math.pi * i / len(buf)))
-    buf = array('H', 3250 + int(395 * math.sin(2 * math.pi * i / 128)) for i in range(128))
+    buf = array('H', 3000 + int(1000 * math.sin(2 * math.pi * i / 128)) for i in range(128))
 print(buf)
 dac = DAC(2,bits=12)
 dac.write_timed(buf, 1 * len(buf), mode=DAC.CIRCULAR)
