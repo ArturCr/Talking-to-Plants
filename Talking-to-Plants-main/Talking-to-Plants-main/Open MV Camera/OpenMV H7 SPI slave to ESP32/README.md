@@ -1,0 +1,1 @@
+This was developed to vastly improve data transfer speeds but as this due to difficulties getting the ESP32 SPI library to produce packets in the required size the protocol was bit banged in, this made it comparable in speed to UART. Due to the extensive testing already carried on UART it was then used instead of this method.
