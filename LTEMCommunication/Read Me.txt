@@ -1,6 +1,0 @@
-LTEM Communication V1:
-
-Connects to Soracom Harvest, confirms connection and then stops
-
-Source code for Spresense LTE module:
-https://github.com/sonydevworld/spresense-arduino-compatible/tree/master/Arduino15/packages/SPRESENSE/hardware/spresense/1.0.0/libraries/LTE/src

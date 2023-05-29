@@ -1,0 +1,1 @@
+The archive folder contains the code for other technologies that were developed as part of the project but were not used in the final design. But they were archived as they have been used as tools to speed up the transition and allow for testing of some subsystems.
