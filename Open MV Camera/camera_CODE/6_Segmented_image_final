@@ -1,0 +1,52 @@
+
+import sensor, image, pyb, os, time
+
+N_FRAMES=12
+# record_time = 10000
+
+sensor.reset()                      # Reset and initialize the sensor.
+sensor.set_pixformat(sensor.GRAYSCALE) # Set pixel format to GRAYSCALE
+sensor.set_framesize(sensor.QVGA)
+sensor.set_windowing((120, 120))
+
+sensor.skip_frames(time = 2000)     # Wait for settings take effect.
+
+clock = time.clock()                # Create a clock object to track the FPS.
+
+stream = image.ImageIO((120, 120, sensor.GRAYSCALE), N_FRAMES) # Write to memory stream and modify images after they've all been captured
+
+for i in range(0, N_FRAMES):
+    clock.tick()
+    stream.write(sensor.snapshot().lens_corr(1.8))
+    print(clock.fps())
+
+while (True):
+    # Rewind stream and play back
+    stream.seek(0)
+    img = stream.read(copy_to_fb=True, pause=True)
+    cpy= img.copy()
+    cpy2= img.copy()
+    cpy.gaussian(3, unsharp=True, threshold=False)
+    cpy.laplacian(3, sharpen=True, threshold=True)
+    cpy.invert()
+    cpy.dilate(1, threshold=6)
+    cpy.erode(1, threshold=7)
+    cpy2.clear(cpy)
+    th=cpy2.get_histogram().get_threshold()
+    th_int= th.value()
+    thresholdNG = [(th_int, 255)]
+    b=img.binary(thresholdNG,to_bitmap=True, copy=True)
+    img.clear(b).to_grayscale
+
+    for i in range(1, N_FRAMES):
+
+        img = stream.read(copy_to_fb=True, pause=True)
+        img.clear(b).to_grayscale
+
+
+
+
+
+
+
+
