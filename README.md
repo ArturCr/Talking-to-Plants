@@ -4,7 +4,7 @@
 ## Team Members:
 | name  | user |
 | ------------- | ------------- |
-| Justin Tan | JUSTUN9 |
+| Justin Tan | JSTUN9 |
 | David Mohammadi | davidmo13|
 | Momin Anwar | mominanwar|
 | Mujhtaba Afzal | Gunflower123 |
