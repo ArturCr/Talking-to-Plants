@@ -9,16 +9,16 @@ def deflate_decompress(compressed_data):
     decompressed_data = zlib.decompress(compressed_data)
     return decompressed_data
 
-/*The deflate_compress function takes in the data to be compressed and uses the zlib.compress
-function to compress it using the DEFLATE algorithm with the highest compression level (level 9).
-The resulting compressed data is returned.
+#The deflate_compress function takes in the data to be compressed and uses the zlib.compress
+#function to compress it using the DEFLATE algorithm with the highest compression level (level 9).
+#The resulting compressed data is returned.
 
-The deflate_decompress function takes in the compressed data and uses the zlib.decompress
-function to decompress it using the DEFLATE algorithm. The resulting decompressed data is returned.
+#The deflate_decompress function takes in the compressed data and uses the zlib.decompress
+#function to decompress it using the DEFLATE algorithm. The resulting decompressed data is returned.
 
-Note that the code assumes that the data to be compressed is a bytes object,
-and the output is a bytes object as well. If you need to use other types of objects,
-you may need to modify the code accordingly. */
+#Note that the code assumes that the data to be compressed is a bytes object,
+#and the output is a bytes object as well. If you need to use other types of objects,
+#you may need to modify the code accordingly. */
 
 
 #micropython code for compression and decompression using LZSS
