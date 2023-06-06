@@ -8,18 +8,18 @@ from pyb import DAC
 from pyb import Timer
 
 ##User defined parametters
-DAC_startvalue=0  #4095 - 0
+DAC_startvalue=3095  #4095 - 0
 Lookuptable_active=0 #0 or 1 => 1 to activate oscillation
 DC_offset = 3500-600 #4095 - 0
-Amplitude = 4095-DC_offset
+Amplitude = 4095-DC_offset-700
 Frequency = [1,0.5,0.1]
-PeriodTable = [10,2,1]
+PeriodTable = [7,2,1]
 Period= 10 #works within 1 to 10
 Num_per_wave=2
 capture_delay= Period/Num_per_wave
 buffersize=1024
 flag = True
-packetSize = 6000
+packetSize = 3000
 headerSize = 5
 """ # cause sensor & stm32 to sleep
 # Deep Sleep Mode Example
@@ -234,7 +234,7 @@ while(True):
             thresholdNG = [(0, th_int)]
             b=img.binary(thresholdNG,to_bitmap=True, copy=True)
             img.clear(b).to_grayscale
-            img.save("%d.jpg"%(imageCount), quality = 5) # Store image under the name "0.jpg" #-----------------fix me!!!!
+            img.save("%d.jpg"%(imageCount), quality = 100) # Store image under the name "0.jpg" #-----------------fix me!!!!
             print("Capture Sucess")
             imageCount +=1
             #wait x sec
@@ -258,7 +258,7 @@ while(True):
                 # mask is reused here
                 img.clear(b).to_grayscale
                 # Segmentation End
-                img.save("%d.jpg"%(imageCount), quality = 5) # Store image under the name "0.jpg" #-----------------fix me!!!!
+                img.save("%d.jpg"%(imageCount), quality = 100) # Store image under the name "0.jpg" #-----------------fix me!!!!
                 print("Capture Sucess")
                 imageCount +=1
                 #wait x sec
@@ -338,7 +338,7 @@ while(True):
                                     print("correct Final")
                                     time.sleep_ms(1000)
                                     # only update if freq count is last
-                                    if (freqCount ==2):
+                                    if (freqCount ==2 and segmentCount == totalSegmentCount):
                                         PeriodTable[0]= int.from_bytes(uart.read(1), 'big', False)
                                         PeriodTable[1]= int.from_bytes(uart.read(1), 'big', False)
                                         PeriodTable[2]= int.from_bytes(uart.read(1), 'big', False)
