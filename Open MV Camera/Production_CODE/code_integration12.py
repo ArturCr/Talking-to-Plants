@@ -161,10 +161,10 @@ pressed = 1 #if PULL_Down=1 if PULL_UP=0
 sleepFlag = False
 
 # Lookuptable
-"""
+
 dac = DAC(2,bits=12)
 dac.write(DAC_startvalue)
-
+"""
 if Lookuptable_active==1:
     buf = bytearray(buffersize)
     for i in range(len(buf)):
@@ -234,7 +234,7 @@ while(True):
             thresholdNG = [(0, th_int)]
             b=img.binary(thresholdNG,to_bitmap=True, copy=True)
             img.clear(b).to_grayscale
-            img.save("%d.jpg"%(imageCount), quality = 100) # Store image under the name "0.jpg" #-----------------fix me!!!!
+            img.save("%d.jpg"%(imageCount), quality = 80) # Store image under the name "0.jpg" #-----------------fix me!!!!
             print("Capture Sucess")
             imageCount +=1
             #wait x sec
@@ -258,14 +258,17 @@ while(True):
                 # mask is reused here
                 img.clear(b).to_grayscale
                 # Segmentation End
-                img.save("%d.jpg"%(imageCount), quality = 100) # Store image under the name "0.jpg" #-----------------fix me!!!!
+                img.save("%d.jpg"%(imageCount), quality = 80) # Store image under the name "0.jpg" #-----------------fix me!!!!
                 print("Capture Sucess")
                 imageCount +=1
                 #wait x sec
                 time.sleep_ms(capture_delay)
 
             # Done Images
-            time.sleep_ms(2000)
+            # turn off LED
+            dac.write(0)
+            dac.deinit()
+            #time.sleep_ms(2000)
 
             #for loop sending all images
             for u in range(imageCount):
@@ -386,5 +389,7 @@ while(True):
             freqCount +=1
             print(freqCount)
         # Sleep for x and turn on sleep flag
+        dac.write(0)
+        dac.deinit()
         time.sleep_ms(timeDiff*1000)
         sleepFlag = True
