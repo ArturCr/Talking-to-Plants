@@ -10,5 +10,5 @@
 | Mujhtaba Afzal | Gunflower123 |
 | Sam Ryder | SamRyder |
 | Flavia Dumitrica | flaviamihaela |
-| Marton gonczy | martongonczy |
+| Marton Gonczy | martongonczy |
 | Artur Cruz | ArturCr |
