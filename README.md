@@ -12,3 +12,5 @@
 | Flavia Dumitrica | flaviamihaela |
 | Marton Gonczy | martongonczy |
 | Artur Cruz | ArturCr |
+
+# This project is now Archived post-final submission
